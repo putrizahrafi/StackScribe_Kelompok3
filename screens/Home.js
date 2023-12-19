@@ -4,8 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Banner, BookCard, Category, Gap, Header, Input, Section } from '../components';
 import { Box, HStack, Heading, Image, ScrollView, Text } from 'native-base';
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { TouchableOpacity } from 'react-native'
 
-const Home = () => {
+const Home = ({ navigation }) => {
+  const navigateToDetailbuku = () => {
+    navigation.navigate("Detailbuku");
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Box style={{ backgroundColor: '#E0F4FF', flex: 1 }}>
@@ -16,9 +20,15 @@ const Home = () => {
           <Gap height={16} />
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <HStack>
+            <TouchableOpacity onPress={() => navigation.navigate('Detailbuku')}>
               <Banner source={require('../assets/images/cover1.jpeg')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Detailbuku')}>
               <Banner source={require('../assets/images/cover2.jpeg')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Detailbuku')}>
               <Banner source={require('../assets/images/cover3.jpeg')} />
+            </TouchableOpacity>
             </HStack>
           </ScrollView>
         </Box>
@@ -49,30 +59,43 @@ const Home = () => {
               </HStack>
             </ScrollView>
             <Gap height={12} />
+            <TouchableOpacity onPress={() => navigation.navigate('Detailbuku')}>
             <Section title={"Popular"} name={"see all"} />
+            </TouchableOpacity>
             <Gap height={12} />
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <HStack>
+              <TouchableOpacity onPress={() => navigation.navigate('Detailbuku1')}>
                 <BookCard
-                  source={require('../assets/images/book1.jpg')}
-                  title={'Professional React Native'}
-                  author={'by: Alexander Benedikt'} />
+                  source={require('../assets/images/book1.jpeg')}
+                  title={'Unseen World'}
+                  author={'by: Jamilla Francis'} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Detailbuku')}>
                 <BookCard
                   source={require('../assets/images/book2.jpeg')}
-                  title={'Alice In Neverland'}
-                  author={'by: Jeni Conrad'} />
+                  title={'Good Enough'}
+                  author={'by: Jen Petro-Roy'}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Detailbuku2')}>
                 <BookCard
                   source={require('../assets/images/book3.jpeg')}
                   title={'Misery'}
                   author={'by: Stephen King'} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Detailbuku3')}>
                 <BookCard
                   source={require('../assets/images/book4.jpeg')}
                   title={'Pride And Prejudice'}
                   author={'by: Jane Austen'} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Detailbuku4')}>
                 <BookCard
                   source={require('../assets/images/book5.jpeg')}
                   title={'Lost Boy'}
                   author={'by: Christina Henry'} />
+                </TouchableOpacity>
               </HStack>
             </ScrollView>
             <Gap height={50} />
@@ -84,4 +107,3 @@ const Home = () => {
 }
 
 export default Home
-// export default Home
