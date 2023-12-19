@@ -3,15 +3,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from 'react';
-import { 
+import {
 Login,
 Signup,
 Home,
 Messages,
 Welcome,
-EditProfile, 
-ContactUs, 
-Guide } from './screens';
+EditProfile,
+ContactUs,
+Guide,
+Detailbuku,
+Detailbuku1,
+Detailbuku2,
+Detailbuku3,
+Detailbuku4 } from './screens';
 import BottomTabNav from './navigations/BottomTabNav';
 import { NativeBaseProvider } from 'native-base';
 
@@ -40,7 +45,7 @@ export default function App() {
     <NativeBaseProvider>
     <NavigationContainer onReady={onLayoutRootView}>
       <Stack.Navigator
-        initialRouteName='BottomTabNav'
+        initialRouteName='Welcome'
       >
         <Stack.Screen
           name="Welcome"
@@ -49,6 +54,47 @@ export default function App() {
             headerShown: false
           }}
         />
+
+        <Stack.Screen
+          name="Detailbuku"
+          component={Detailbuku}
+          options={{
+            headerShown: false
+          }}
+        />
+
+        <Stack.Screen
+          name="Detailbuku1"
+          component={Detailbuku1}
+          options={{
+            headerShown: false
+          }}
+        />
+
+        <Stack.Screen
+          name="Detailbuku2"
+          component={Detailbuku2}
+          options={{
+            headerShown: false
+          }}
+        />
+
+        <Stack.Screen
+          name="Detailbuku3"
+          component={Detailbuku3}
+          options={{
+            headerShown: false
+          }}
+        />
+
+        <Stack.Screen
+          name="Detailbuku4"
+          component={Detailbuku4}
+          options={{
+            headerShown: false
+          }}
+        />
+
         <Stack.Screen
           name="Home"
           component={Home}
