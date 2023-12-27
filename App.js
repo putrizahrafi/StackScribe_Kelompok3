@@ -5,7 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from 'react';
 import {
 Login,
-Signup,
+Register,
 Home,
 Messages,
 Welcome,
@@ -130,6 +130,23 @@ export default function App() {
               headerShown: false
             }}
           />
+
+        <Stack.Screen
+            name="Register"
+            component={Register}
+            options={{
+              headerShown: false
+            }}
+          />
+
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              headerShown: false
+            }}
+          />
+
           <Stack.Screen
             name="Guide"
             component={Guide}
