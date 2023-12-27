@@ -6,9 +6,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import {Gap} from '../components';
 
 const Welcome = ({ navigation }) => {
-    const navigateToHome = () => {
-        navigation.navigate("Home");
-      };
 
   return (
     <LinearGradient
@@ -43,7 +40,7 @@ const Welcome = ({ navigation }) => {
                 </Heading>
 
                 <Box mt={5}>
-                <TouchableOpacity onPress={() => navigation.navigate('Messages')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                     <Box backgroundColor={"#001B79"} p={2} w={150} h={50} borderRadius={10}>
                     <HStack>
                         <NText color={'white'} fontSize={16} fontWeight={"medium"} ml={8}>Join Now!</NText>
@@ -58,4 +55,3 @@ const Welcome = ({ navigation }) => {
 };
 
 export default Welcome
-// export default Welcome
