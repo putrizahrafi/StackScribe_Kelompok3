@@ -5,12 +5,34 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, FONTS } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
+import FIREBASE from "../config/FIREBASE";
+import { getData, clearStorage } from "../utils/localStorage";
 import {Gap} from '../components';
+import { getUserDetails } from "../actions/action";
 
 const Settings = ({ navigation }) => {
-  const navigateToEditProfile = () => {
-    navigation.navigate("EditProfile");
+  const navigateToEditProfile = async () => {
+    try {
+      // Fetch user profile data (replace with your actual method to fetch user data)
+      const profile = await getUserDetails();
+  
+      if (profile) {
+        navigation.navigate("EditProfile", {
+          nama: profile?.nama,
+          email: profile?.email,
+          nohp: profile?.nohp,
+          uid: profile?.uid,
+        });
+      } else {
+        // Handle the case where user data is not available
+        console.error("User data not available");
+      }
+    } catch (error) {
+      console.error("Error fetching user profile:", error.message);
+      // Handle the error accordingly
+    }
   };
+  
 
   const navigateToSupport = () => {
     console.log("Support function");
@@ -22,6 +44,24 @@ const Settings = ({ navigation }) => {
 
   const logout = () => {
     console.log("Logout");
+  };
+
+  const onSubmit = (profile) => {
+    if (profile) {
+      FIREBASE.auth()
+        .signOut()
+        .then(() => {
+          // Sign-out successful.
+          clearStorage();
+          navigation.replace("Login");
+        })
+        .catch((error) => {
+          // An error happened.
+          alert(error);
+        });
+    } else {
+      navigation.replace("Login");
+    }
   };
 
   const accountItems = [
@@ -156,11 +196,14 @@ const Settings = ({ navigation }) => {
               backgrounColor: COLORS.gray,
             }}
           >
-            {actionsItems.map((item, index) => (
-              <React.Fragment key={index}>
-                {renderSettingsItem(item)}
-              </React.Fragment>
-            ))}
+            <TouchableOpacity onPress={onSubmit}>
+            <Box backgroundColor={"#F4F4F7"} p={2}>
+              <HStack>
+                <Ionicons name="call-outline" size={25} />
+                <NText fontSize={16} fontWeight={"medium"} ml={8}>Logout</NText>
+              </HStack>
+            </Box>
+          </TouchableOpacity>
           </View>
         </View>
 

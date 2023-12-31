@@ -40,7 +40,7 @@ const Welcome = ({ navigation }) => {
                 </Heading>
 
                 <Box mt={5}>
-                <TouchableOpacity onPress={() => navigation.navigate('BottomTabNavigation')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                     <Box backgroundColor={"#001B79"} p={2} w={150} h={50} borderRadius={10}>
                     <HStack>
                         <NText color={'white'} fontSize={16} fontWeight={"medium"} ml={8}>Join Now!</NText>
