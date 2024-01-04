@@ -8,68 +8,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 import {Gap} from '../components';
 
 const Settings = ({ navigation }) => {
-  const navigateToEditProfile = () => {
-    navigation.navigate("EditProfile");
-  };
-
-  const navigateToSupport = () => {
-    console.log("Support function");
-  };
-
-  const navigateToTermsAndPolicies = () => {
-    console.log("Terms and Policies function");
-  };
-
-  const logout = () => {
-    console.log("Logout");
-  };
-
-  const accountItems = [
-    {
-      icon: "person-outline",
-      text: "Edit Profile",
-      action: navigateToEditProfile,
-    },
-  ];
-
-  const supportItems = [
-    { icon: "help-outline", text: "Help & Support", action: navigateToSupport },
-    {
-      icon: "info-outline",
-      text: "Terms and Policies",
-      action: navigateToTermsAndPolicies,
-    },
-  ];
-
-  const actionsItems = [
-    { icon: "logout", text: "Log out", action: logout },
-  ];
-
-  const renderSettingsItem = ({ icon, text, action }) => (
-    <TouchableOpacity
-      onPress={action}
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        paddingVertical: 8,
-        paddingLeft: 12,
-        backgroundColor: COLORS.gray,
-      }}
-    >
-      <MaterialIcons name={icon} size={24} color="black" />
-      <Text
-        style={{
-          marginLeft: 36,
-          ...FONTS.semiBold,
-          fontWeight: 600,
-          fontSize: 16,
-        }}
-      >
-        {text}{" "}
-      </Text>
-    </TouchableOpacity>
-  );
-
   return (
     <SafeAreaView
       style={{
@@ -109,60 +47,43 @@ const Settings = ({ navigation }) => {
       </View>
 
       <ScrollView style={{ marginHorizontal: 12 }}>
-        {/* Account Settings */}
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ ...FONTS.h4, marginVertical: 10 }}>Account</Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: COLORS.gray,
-            }}
-          >
-            {accountItems.map((item, index) => (
-              <React.Fragment key={index}>
-                {renderSettingsItem(item)}
-              </React.Fragment>
-            ))}
-          </View>
-        </View>
 
-        {/* Support and About settings */}
+        {/* ACCOUNT */}
+        <Box mt={5}>
+          <Heading size={"md"}>Account</Heading>
+          <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+            <Box backgroundColor={"#F4F4F7"} p={2}>
+              <HStack>
+                <Ionicons name="person-circle-outline" size={25} />
+                <NText fontSize={16} fontWeight={"medium"} ml={8}>Edit Profile</NText>
+              </HStack>
+            </Box>
+          </TouchableOpacity>
+        </Box>
 
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ ...FONTS.h4, marginVertical: 10 }}>
-            Support & About{" "}
-          </Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: COLORS.gray,
-            }}
-          >
-            {supportItems.map((item, index) => (
-              <React.Fragment key={index}>
-                {renderSettingsItem(item)}
-              </React.Fragment>
-            ))}
-          </View>
-        </View>
+        {/* SUPPORT AND ABOUT */}
+        <Box mt={5}>
+          <Heading size={"md"}>Support and About</Heading>
+          <TouchableOpacity onPress={() => navigation.navigate('ContactUs')}>
+            <Box backgroundColor={"#F4F4F7"} p={2}>
+              <HStack>
+                <Ionicons name="help-circle-outline" size={25} />
+                <NText fontSize={16} fontWeight={"medium"} ml={8}>Help & Support</NText>
+              </HStack>
+            </Box>
+          </TouchableOpacity>
+          <Gap height={8} />
+          <TouchableOpacity onPress={() => navigation.navigate('Guide')}>
+            <Box backgroundColor={"#F4F4F7"} p={2}>
+              <HStack>
+                <Ionicons name="information-circle-outline" size={25} />
+                <NText fontSize={16} fontWeight={"medium"} ml={8}>Terms and Policies</NText>
+              </HStack>
+            </Box>
+          </TouchableOpacity>
+        </Box>
 
-        {/* Actions Settings */}
-
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ ...FONTS.h4, marginVertical: 10 }}>Actions</Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: COLORS.gray,
-            }}
-          >
-            {actionsItems.map((item, index) => (
-              <React.Fragment key={index}>
-                {renderSettingsItem(item)}
-              </React.Fragment>
-            ))}
-          </View>
-        </View>
+        {/* UTILS */}
 
         <Box mt={5}>
           <Heading size={"md"}>Utils</Heading>
@@ -180,6 +101,20 @@ const Settings = ({ navigation }) => {
               <HStack>
                 <Ionicons name="book-outline" size={25} />
                 <NText fontSize={16} fontWeight={"medium"} ml={8}>Guide</NText>
+              </HStack>
+            </Box>
+          </TouchableOpacity>
+        </Box>
+
+        {/* ACTIONS */}
+
+        <Box mt={5}>
+          <Heading size={"md"}>Actions</Heading>
+          <TouchableOpacity onPress={() => console.log('log out')}>
+            <Box backgroundColor={"#F4F4F7"} p={2}>
+              <HStack>
+                <Ionicons name="log-out-outline" size={25} />
+                <NText fontSize={16} fontWeight={"medium"} ml={8}>Log Out</NText>
               </HStack>
             </Box>
           </TouchableOpacity>
