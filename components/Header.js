@@ -7,7 +7,6 @@ const Header = () => {
     <Box>
       <HStack alignItems={"center"} space={2} justifyContent={"space-between"}>
         <Heading size={"lg"} color={"#001B79"}>Home</Heading>
-        <Ionicons name="chatbox-ellipses-outline" size={28} color={"white"} />
       </HStack>
     </Box>
   )
