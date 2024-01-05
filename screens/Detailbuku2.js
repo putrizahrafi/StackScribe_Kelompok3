@@ -199,3 +199,4 @@ const Detailbuku2 = ({ navigation }) => {
 };
 
 export default Detailbuku2;
+

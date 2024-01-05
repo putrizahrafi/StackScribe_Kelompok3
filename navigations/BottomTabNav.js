@@ -8,7 +8,8 @@ import {
 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { COLORS } from "../constants";
-import { Create, Home, Messages, Profile, Settings } from "../screens";
+import { Create, Home, Category, Profile, Settings } from "../screens";
+import { AntDesign } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,13 +47,13 @@ const BottomTabNav = () => {
       />
 
       <Tab.Screen
-        name="Messages"
-        component={Messages}
+        name="Category"
+        component={Category}
         options={{
           tabBarIcon: ({ focused }) => {
             return (
-              <MaterialCommunityIcons
-                name="message-text-outline"
+              <AntDesign
+                name="menuunfold"
                 size={24}
                 color={focused ? COLORS.primary : COLORS.black}
               />

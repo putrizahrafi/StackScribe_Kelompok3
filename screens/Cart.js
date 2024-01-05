@@ -1,150 +1,163 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { Box, HStack, Heading, Text as NText, Stack, TextArea, Image, Center, VStack, Button } from "native-base";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useEffect, useState } from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { Button, Image, VStack, HStack, Heading, Box } from "native-base";
 import { COLORS, FONTS } from "../constants";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Banner, BookCard, Category, Gap, Header, Input, Section } from '../components';
+import { collection, doc, getDocs, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import FIREBASE from "../config/FIREBASE";
+import { Ionicons } from "@expo/vector-icons";
+import { getUserDetails, getBookDetails } from "../actions/action";
+
 
 const Cart = ({ navigation }) => {
-    return (
-        <SafeAreaView
-            style={{
+  const [cartItems, setCartItems] = useState([]);
+  const [userUid, setUserUid] = useState("");
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+
+    cartItems.forEach((item) => {
+      const { quantity, details } = item;
+      const bookPrice = details?.price || 0; // Ensure that price is available, default to 0
+      totalPrice += quantity * bookPrice;
+    });
+
+    return totalPrice;
+  };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await getUserDetails();
+        if (userData && userData.uid) {
+          setUserUid(userData.uid);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    if (userUid) {
+      const fetchCartData = async () => {
+        try {
+          const cartRef = doc(FIREBASE.firestore(), `carts/${userUid}`);
+          const cartDoc = await getDoc(cartRef);
+
+          if (cartDoc.exists()) {
+            const cartData = cartDoc.data();
+            const cartItemsArray = Object.entries(cartData).map(
+              async ([bookId, item]) => {
+                const bookDetails = await getBookDetails(bookId);
+                return {
+                  bookId,
+                  quantity: item.quantity,
+                  details: bookDetails,
+                };
+              }
+            );
+
+            Promise.all(cartItemsArray).then((resolvedItems) => {
+              setCartItems(resolvedItems);
+            });
+          } else {
+            setCartItems([]);
+          }
+        } catch (error) {
+          console.error("Error fetching cart data:", error);
+        }
+      };
+
+      fetchCartData();
+    }
+  }, [userUid]);
+
+  const removeItemFromCart = async (index, bookId) => {
+    try {
+      // Create a copy of the cart items
+      const updatedCartItems = [...cartItems];
+  
+      // Remove the item at the specified index
+      updatedCartItems.splice(index, 1);
+  
+      // Update the cart items state
+      setCartItems(updatedCartItems);
+  
+      // Update the cart data in Firestore
+      const cartRef = doc(FIREBASE.firestore(), `carts/${userUid}`);
+      const updatedCartData = updatedCartItems.reduce((acc, item) => {
+        acc[item.bookId] = { quantity: item.quantity };
+        return acc;
+      }, {});
+      await setDoc(cartRef, updatedCartData);
+  
+      console.log('Item removed from cart:', bookId);
+  
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
+    }
+  };
+
+  return (
+    <View
+      style={{
         flex: 1,
         backgroundColor: COLORS.white,
+        padding: 20,
       }}
     >
+      <Heading style={{ ...FONTS.h3, marginBottom: 20 }}>Cart</Heading>
 
-      {/* button biru settings */}
-      <View
-        style={{
-          marginHorizontal: 12,
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 20,
-          backgroundColor: COLORS.blue,
-          padding: 20,
-          borderRadius: 20,
-        }}
-      >
-        {/* tombol untuk kembali */}
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            position: "absolute",
-            left: 0,
-            padding: 20
-          }}
-        >
-          <MaterialIcons
-            name="keyboard-arrow-left"
-            size={24}
-            color={COLORS.black}
-          />
-        </TouchableOpacity>
-
-        <Text style={{ ...FONTS.h3 }}>Cart</Text>
-        </View>
-
-        <ScrollView w={["200", "300"]} h="80">
-        <HStack space={2} justifyContent="flex-start" marginLeft={5} marginTop={10} > 
-        <Center h="200" w="130" shadow={3}>
-        <Image source={{
-                uri: "https://i.pinimg.com/564x/a3/23/f9/a323f9054c7f21e3f89780ebac0936c9.jpg"
-                }} alt="Alternate Text" size='2xl' borderRadius={10} />
-        </Center>
-        <VStack>
-        <Heading>UNSEEN WORLD</Heading>
-        <Text>
-            Penulis : Jamilla Francis
-        </Text>
-        <Text>
-            Kategori : Slice Of Life
-        </Text>
-        <Text>
-            Harga : Rp 55.000
-        </Text>
-        <Button marginTop={15} backgroundColor={'#11235A'} h={10} w={100}
-        onPress={() => console.log("hello world")}>Checkout</Button>
-        </VStack>
-        </HStack>
-
-        {/* ==================BATAS==================== */}
-
-        <HStack space={2} justifyContent="flex-start" marginLeft={5} marginTop={90}>
-        <Center h="200" w="130" shadow={3}>
-        <Image source={{
-                uri: "https://i.pinimg.com/736x/82/eb/cf/82ebcf8435a2d403014064eee495d8f2.jpg"
-                }} alt="Alternate Text" size='2xl' borderRadius={10} />
-        </Center>
-        <VStack>
-        <Heading size={'md'}>PRIDE AND PREJUDICE </Heading>
-        <Text>
-            Penulis : Jamilla Francis
-        </Text>
-        <Text>
-            Kategori : Slice Of Life
-        </Text>
-        <Text>
-            Harga : Rp 55.000
-        </Text>
-        <Button marginTop={15} backgroundColor={'#11235A'} h={10} w={100}
-        onPress={() => console.log("hello world")}>Checkout</Button>
-        </VStack>
-        </HStack>
-
-        {/* ==================BATAS==================== */}
-
-        <HStack space={2} justifyContent="flex-start" marginLeft={5} marginTop={90}>
-        <Center h="200" w="130" shadow={3}>
-        <Image source={{
-                uri: "https://i.pinimg.com/564x/58/ed/3e/58ed3e68bd5b5aa7cc86254b731e8d0c.jpg"
-                }} alt="Alternate Text" size='2xl' borderRadius={10} />
-        </Center>
-        <VStack>
-        <Heading>LOST BOY</Heading>
-        <Text>
-            Penulis : Christina Henry
-        </Text>
-        <Text>
-            Kategori : Fantasi
-        </Text>
-        <Text>
-            Harga : Rp 55.000
-        </Text>
-        <Button marginTop={15} backgroundColor={'#11235A'} h={10} w={100}
-        onPress={() => console.log("hello world")}>Checkout</Button>
-        </VStack>
-        </HStack>
-
-        {/* ==================BATAS==================== */}
-
-        <HStack space={2} justifyContent="flex-start" marginLeft={5} marginTop={90} marginBottom={10}>
-        <Center h="200" w="130" shadow={3}>
-        <Image source={{
-                uri: "https://i.pinimg.com/564x/d2/d9/30/d2d9306df7f3c37b25351665eeefd669.jpg"
-                }} alt="Alternate Text" size='2xl' borderRadius={10} />
-        </Center>
-        <VStack>
-        <Heading>MISERY</Heading>
-        <Text>
-            Penulis : Stephen King
-        </Text>
-        <Text>
-            Kategori : Mistery
-        </Text>
-        <Text>
-            Harga : Rp 55.000
-        </Text>
-        <Button marginTop={15} backgroundColor={'#11235A'} h={10} w={100}
-        onPress={() => console.log("hello world")}>Checkout</Button>
-        </VStack>
-        </HStack>
-
+      {cartItems.length > 0 ? (
+        <ScrollView>
+          {cartItems.map((item, index) => (
+            <HStack
+              key={item.bookId}
+              space={2}
+              justifyContent="flex-start"
+              marginBottom={10}
+            >
+              {/* Fetch book details dynamically */}
+              <Image
+                source={{ uri: item.details?.cover }}
+                alt="Book Image"
+                size="md"
+                borderRadius={10}
+              />
+              <VStack>
+                <Heading>{item.details?.title}</Heading>
+                <Text>Quantity: {item.quantity}</Text>
+                <Text>Rp . {item.details?.price}</Text>
+                <TouchableOpacity
+                  onPress={() => removeItemFromCart(index, item.bookId)}
+                >
+                  <Ionicons name="trash-outline" size={24} color="red" />
+                </TouchableOpacity>
+              </VStack>
+            </HStack>
+          ))}
         </ScrollView>
-    </SafeAreaView>
-    );
+      ) : (
+        <Text>Your cart is empty.</Text>
+      )}
+
+      <Box marginTop={3} marginLeft={5}>
+        <Text fontSize="lg" fontWeight="bold">
+          Total Harga: Rp {calculateTotalPrice()} {/* Display total price */}
+        </Text>
+      </Box>
+
+      <Button
+        marginTop={10}
+        backgroundColor={"#11235A"}
+        onPress={() => console.log("Proceed to checkout")}
+      >
+        Proceed to Checkout
+      </Button>
+    </View>
+  );
 };
 
 export default Cart;
