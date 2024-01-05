@@ -163,6 +163,19 @@ const Settings = ({ navigation }) => {
           </TouchableOpacity>
         </Box>
 
+        {/* ACCOUNT */}
+        <Box mt={5}>
+          <Heading size={"md"}>Account</Heading>
+          <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+            <Box backgroundColor={"#F4F4F7"} p={2}>
+              <HStack>
+                <Ionicons name="person-circle-outline" size={25} />
+                <NText fontSize={16} fontWeight={"medium"} ml={8}>Edit Profile</NText>
+              </HStack>
+            </Box>
+          </TouchableOpacity>
+        </Box>
+
         {/* Support and About settings */}
 
         <View style={{ marginBottom: 12 }}>
@@ -220,6 +233,20 @@ const Settings = ({ navigation }) => {
               <HStack>
                 <Ionicons name="book-outline" size={25} />
                 <NText fontSize={16} fontWeight={"medium"} ml={8}>Guide</NText>
+              </HStack>
+            </Box>
+          </TouchableOpacity>
+        </Box>
+
+        {/* ACTIONS */}
+
+        <Box mt={5}>
+          <Heading size={"md"}>Actions</Heading>
+          <TouchableOpacity onPress={() => console.log('log out')}>
+            <Box backgroundColor={"#F4F4F7"} p={2}>
+              <HStack>
+                <Ionicons name="log-out-outline" size={25} />
+                <NText fontSize={16} fontWeight={"medium"} ml={8}>Log Out</NText>
               </HStack>
             </Box>
           </TouchableOpacity>
