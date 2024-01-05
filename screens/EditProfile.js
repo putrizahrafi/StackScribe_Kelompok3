@@ -133,3 +133,4 @@ const EditProfile = ({ route, navigation }) => {
 };
 
 export default EditProfile;
+// exportdefault EditProfile
