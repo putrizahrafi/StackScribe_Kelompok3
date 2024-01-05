@@ -199,7 +199,7 @@ const Settings = ({ navigation }) => {
             <TouchableOpacity onPress={onSubmit}>
             <Box backgroundColor={"#F4F4F7"} p={2}>
               <HStack>
-                <Ionicons name="call-outline" size={25} />
+                <Ionicons name="log-out-outline" size={25} />
                 <NText fontSize={16} fontWeight={"medium"} ml={8}>Logout</NText>
               </HStack>
             </Box>

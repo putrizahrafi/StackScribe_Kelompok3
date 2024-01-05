@@ -1,0 +1,163 @@
+import React, { useEffect, useState } from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { Button, Image, VStack, HStack, Heading, Box } from "native-base";
+import { COLORS, FONTS } from "../constants";
+import { collection, doc, getDocs, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import FIREBASE from "../config/FIREBASE";
+import { Ionicons } from "@expo/vector-icons";
+import { getUserDetails, getBookDetails } from "../actions/action";
+
+
+const Cart = ({ navigation }) => {
+  const [cartItems, setCartItems] = useState([]);
+  const [userUid, setUserUid] = useState("");
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+
+    cartItems.forEach((item) => {
+      const { quantity, details } = item;
+      const bookPrice = details?.price || 0; // Ensure that price is available, default to 0
+      totalPrice += quantity * bookPrice;
+    });
+
+    return totalPrice;
+  };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await getUserDetails();
+        if (userData && userData.uid) {
+          setUserUid(userData.uid);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    if (userUid) {
+      const fetchCartData = async () => {
+        try {
+          const cartRef = doc(FIREBASE.firestore(), `carts/${userUid}`);
+          const cartDoc = await getDoc(cartRef);
+
+          if (cartDoc.exists()) {
+            const cartData = cartDoc.data();
+            const cartItemsArray = Object.entries(cartData).map(
+              async ([bookId, item]) => {
+                const bookDetails = await getBookDetails(bookId);
+                return {
+                  bookId,
+                  quantity: item.quantity,
+                  details: bookDetails,
+                };
+              }
+            );
+
+            Promise.all(cartItemsArray).then((resolvedItems) => {
+              setCartItems(resolvedItems);
+            });
+          } else {
+            setCartItems([]);
+          }
+        } catch (error) {
+          console.error("Error fetching cart data:", error);
+        }
+      };
+
+      fetchCartData();
+    }
+  }, [userUid]);
+
+  const removeItemFromCart = async (index, bookId) => {
+    try {
+      // Create a copy of the cart items
+      const updatedCartItems = [...cartItems];
+  
+      // Remove the item at the specified index
+      updatedCartItems.splice(index, 1);
+  
+      // Update the cart items state
+      setCartItems(updatedCartItems);
+  
+      // Update the cart data in Firestore
+      const cartRef = doc(FIREBASE.firestore(), `carts/${userUid}`);
+      const updatedCartData = updatedCartItems.reduce((acc, item) => {
+        acc[item.bookId] = { quantity: item.quantity };
+        return acc;
+      }, {});
+      await setDoc(cartRef, updatedCartData);
+  
+      console.log('Item removed from cart:', bookId);
+  
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
+    }
+  };
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.white,
+        padding: 20,
+      }}
+    >
+      <Heading style={{ ...FONTS.h3, marginBottom: 20 }}>Cart</Heading>
+
+      {cartItems.length > 0 ? (
+        <ScrollView>
+          {cartItems.map((item, index) => (
+            <HStack
+              key={item.bookId}
+              space={2}
+              justifyContent="flex-start"
+              marginBottom={10}
+            >
+              {/* Fetch book details dynamically */}
+              <Image
+                source={{ uri: item.details?.cover }}
+                alt="Book Image"
+                size="md"
+                borderRadius={10}
+              />
+              <VStack>
+                <Heading>{item.details?.title}</Heading>
+                <Text>Quantity: {item.quantity}</Text>
+                <Text>Rp . {item.details?.price}</Text>
+                <TouchableOpacity
+                  onPress={() => removeItemFromCart(index, item.bookId)}
+                >
+                  <Ionicons name="trash-outline" size={24} color="red" />
+                </TouchableOpacity>
+              </VStack>
+            </HStack>
+          ))}
+        </ScrollView>
+      ) : (
+        <Text>Your cart is empty.</Text>
+      )}
+
+      <Box marginTop={3} marginLeft={5}>
+        <Text fontSize="lg" fontWeight="bold">
+          Total Harga: Rp {calculateTotalPrice()} {/* Display total price */}
+        </Text>
+      </Box>
+
+      <Button
+        marginTop={10}
+        backgroundColor={"#11235A"}
+        onPress={() => console.log("Proceed to checkout")}
+      >
+        Proceed to Checkout
+      </Button>
+    </View>
+  );
+};
+
+export default Cart;

@@ -167,3 +167,4 @@ const Profile = ({ navigation }) => {
 };
 
 export default Profile;
+// export default profile

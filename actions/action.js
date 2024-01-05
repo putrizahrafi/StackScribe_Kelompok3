@@ -1,6 +1,7 @@
 import { Alert } from "react-native";
 import FIREBASE from "../config/FIREBASE";
 import { clearStorage, getData, storeData } from "../utils/localStorage";
+import { collection, doc, getDocs, setDoc, updateDoc, getDoc} from "firebase/firestore";
 
 export const registerUser = async (data, password) => {
   try {
@@ -24,6 +25,7 @@ export const registerUser = async (data, password) => {
     throw error;
   }
 };
+
 
 export const getUserDetails = async () => {
   try {
@@ -55,7 +57,41 @@ export const updateUser = async (uid, newData) => {
   }
 };
 
+export const fetchPopularBooks = async () => {
+  try {
+    const booksRef = collection(FIREBASE.firestore(), 'books');
+    const booksSnapshot = await getDocs(booksRef);
 
+    const popularBooks = [];
+    booksSnapshot.forEach((doc) => {
+      const bookData = doc.data();
+      const bookWithImage = {
+        ...bookData,
+        id: doc.id, // Add the 'id' field to the book object
+        imageUrl: bookData.imageUrl,
+      };
+      popularBooks.push(bookWithImage);
+    });
+
+    return popularBooks;
+  } catch (error) {
+    console.error('Error fetching popular books:', error);
+    throw error;
+  }
+};
+
+export const getBookDetails = async (bookId) => {
+  try {
+    const snapshot = await FIREBASE.firestore().collection('books').doc(bookId).get();
+    const bookData = snapshot.data();
+    return {
+      ...bookData,
+      id: snapshot.id,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const loginUser = async (email, password) => {
   try {
@@ -90,4 +126,60 @@ export const logoutUser = () => {
       // An error happened.
       alert(error);
     });
+};
+
+export const addToCart = async (userUid, bookId, quantity) => {
+  try {
+    // Get a reference to the user's cart document
+    const cartRef = doc(FIREBASE.firestore(), `carts/${userUid}`);
+
+    // Check if the cart document already exists
+    const cartDoc = await getDoc(cartRef);
+
+    if (!cartDoc.exists()) {
+      // If it doesn't exist, create a new cart document
+      await setDoc(cartRef, {});
+    }
+
+    // Fetch the existing cart data
+    const existingCart = cartDoc.data() || {};
+
+    // Check if the book already exists in the cart
+    if (existingCart[bookId]) {
+      // If it does, update the quantity
+      existingCart[bookId].quantity += quantity;
+    } else {
+      // If not, add a new entry for the book
+      existingCart[bookId] = { quantity };
+    }
+
+    // Update the cart data in Firestore
+    await updateDoc(cartRef, existingCart);
+
+    console.log('Book added to cart:', bookId);
+
+    return true;
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+    throw error;
+  }
+};
+
+export const getUserCart = async (userUid) => {
+  try {
+    const userCartRef = FIREBASE.firestore().collection("carts");
+    const userCartQuery = userCartRef.where("userId", "==", userUid);
+
+    const userCartData = await userCartQuery.get().then((querySnapshot) => {
+      const cartItems = [];
+      querySnapshot.forEach((doc) => {
+        cartItems.push({ id: doc.id, ...doc.data() });
+      });
+      return cartItems;
+    });
+
+    return userCartData;
+  } catch (error) {
+    throw error;
+  }
 };

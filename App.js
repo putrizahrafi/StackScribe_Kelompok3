@@ -1,163 +1,83 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useFonts } from 'expo-font';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback } from 'react';
+import { useCallback } from "react";
 import {
-Login,
-Register,
-Home,
-Messages,
-Welcome,
-EditProfile,
-ContactUs,
-Guide,
-Detailbuku,
-Detailbuku1,
-Detailbuku2,
-Detailbuku3,
-Detailbuku4 } from './screens';
-import BottomTabNav from './navigations/BottomTabNav';
-import { NativeBaseProvider } from 'native-base';
+  Login,
+  Register,
+  Home,
+  Category,
+  Welcome,
+  EditProfile,
+  ContactUs,
+  Guide,
+  Detailbuku1,
+  SearchScreen,
+  SeeAllScreen,
+  Cart
+} from "./screens";
+import BottomTabNav from "./navigations/BottomTabNav";
+import { NativeBaseProvider } from "native-base";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    black: require('./assets/fonts/Inter-Black.ttf'),
-    bold: require('./assets/fonts/Inter-Bold.ttf'),
-    medium: require('./assets/fonts/Inter-Medium.ttf'),
-    regular: require('./assets/fonts/Inter-Regular.ttf'),
-    semiBold: require('./assets/fonts/Inter-SemiBold.ttf'),
+    black: require("./assets/fonts/Inter-Black.ttf"),
+    bold: require("./assets/fonts/Inter-Bold.ttf"),
+    medium: require("./assets/fonts/Inter-Medium.ttf"),
+    regular: require("./assets/fonts/Inter-Regular.ttf"),
+    semiBold: require("./assets/fonts/Inter-SemiBold.ttf"),
   });
 
-  const onLayoutRootView = useCallback(async ()=>{
-    if(fontsLoaded){
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
       await SplashScreen.hideAsync();
     }
-  },[fontsLoaded]);
+  }, [fontsLoaded]);
 
-  if(!fontsLoaded){
-    return null
+  if (!fontsLoaded) {
+    return null;
   }
   return (
     <NativeBaseProvider>
-    <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator
-        initialRouteName='Welcome'
-      >
-        <Stack.Screen
-          name="Welcome"
-          component={Welcome}
-          options={{
-            headerShown: false
+      <NavigationContainer onReady={onLayoutRootView}>
+        <Stack.Navigator
+          initialRouteName="Welcome"
+          screenOptions={{
+            headerShown: false,
           }}
-        />
+        >
+          <Stack.Screen name="Welcome" component={Welcome} />
 
-        <Stack.Screen
-          name="Detailbuku"
-          component={Detailbuku}
-          options={{
-            headerShown: false
-          }}
-        />
+          <Stack.Screen name="Detailbuku1" component={Detailbuku1} />
 
-        <Stack.Screen
-          name="Detailbuku1"
-          component={Detailbuku1}
-          options={{
-            headerShown: false
-          }}
-        />
+          <Stack.Screen name="Home" component={Home} />
 
-        <Stack.Screen
-          name="Detailbuku2"
-          component={Detailbuku2}
-          options={{
-            headerShown: false
-          }}
-        />
+          <Stack.Screen name="Category" component={Category} />
 
-        <Stack.Screen
-          name="Detailbuku3"
-          component={Detailbuku3}
-          options={{
-            headerShown: false
-          }}
-        />
+          <Stack.Screen name="BottomTabNavigation" component={BottomTabNav} />
 
-        <Stack.Screen
-          name="Detailbuku4"
-          component={Detailbuku4}
-          options={{
-            headerShown: false
-          }}
-        />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
 
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-          name="Messages"
-          component={Messages}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-          name="BottomTabNavigation"
-          component={BottomTabNav}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-          name="EditProfile"
-          component={EditProfile}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-            name="ContactUs"
-            component={ContactUs}
-            options={{
-              headerShown: false
-            }}
-          />
+          <Stack.Screen name="ContactUs" component={ContactUs} />
 
-        <Stack.Screen
-            name="Register"
-            component={Register}
-            options={{
-              headerShown: false
-            }}
-          />
+          <Stack.Screen name="Register" component={Register} />
 
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              headerShown: false
-            }}
-          />
+          <Stack.Screen name="Login" component={Login} />
 
-          <Stack.Screen
-            name="Guide"
-            component={Guide}
-            options={{
-              headerShown: false
-            }}
-          />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen name="Guide" component={Guide} />
+
+          <Stack.Screen name="Search" component={SearchScreen} />
+
+          <Stack.Screen name="SeeAll" component={SeeAllScreen} />
+
+          <Stack.Screen name="Cart" component={Cart} />
+
+        </Stack.Navigator>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 }
-
-
