@@ -3,15 +3,15 @@ import { Box, Text, VStack, ScrollView, Image, Button } from "native-base";
 import { clearStorage, getData } from "../utils";
 import FIREBASE from "../config/FIREBASE";
 
-const Profile = ({ navigation }) => {
-    const [profile, setProfile] = useState(null);
+const Popular = ({ navigation }) => {
+    const [popular, setPopular] = useState(null);
 
   const getUserData = () => {
     getData("user").then((res) => {
       const data = res;
       if (data) {
         console.log("isi data", data);
-        setProfile(data);
+        setPopular(data);
       } else {
         // navigation.replace('Login');
       }
@@ -28,8 +28,8 @@ const Profile = ({ navigation }) => {
     };
   }, [navigation]);
 
-  const onSubmit = (profile) => {
-    if (profile) {
+  const onSubmit = (popular) => {
+    if (popular) {
       FIREBASE.auth()
         .signOut()
         .then(() => {
@@ -51,8 +51,8 @@ const Profile = ({ navigation }) => {
       <ScrollView>
         <VStack backgroundColor="blueGray.100" width="full" mb={10}>
           <Image source={require("../assets/images/hero1.jpg")} size="2xl" borderRadius="full" alignSelf="center" alt="Foto Profil" />
-          <Text fontSize="3xl" alignSelf="center" marginTop={5} fontWeight="bold">
-          {profile?.nama}
+          <Text fontSize="xl" alignSelf="center" marginTop={5} fontWeight="bold">
+          {popular?.nama}
           </Text>
         </VStack>
         <Box flexDirection="column" bgColor="white" shadowColor="black" shadowOffset={{ width: 0, height: 2 }} shadowOpacity={0.25} shadowRadius={3.5} justifyContent="space-evenly" p={5} borderRadius="xl">
@@ -64,7 +64,7 @@ const Profile = ({ navigation }) => {
               Email
             </Text>
             <Text color="black" fontSize="xl" mt={2}>
-              {profile?.email}
+              {popular?.email}
             </Text>
           </Box>
           <Box mt={5}>
@@ -72,13 +72,16 @@ const Profile = ({ navigation }) => {
               Nomor Ponsel
             </Text>
             <Text color="black" fontSize="xl" mt={2}>
-              +62 {profile?.nohp}
+              +62 {popular?.nohp}
             </Text>
           </Box>
+        </Box>
+        <Box alignItems="center">
+      <     Button w={"100%"} borderRadius={20} onPress={() => console.log("hello world")}>Click Me</Button>
         </Box>
       </ScrollView>
     </Box>
   );
 };
 
-export default Profile;
+export default Popular;

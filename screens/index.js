@@ -13,6 +13,8 @@ import Login from "./Login";
 import SearchScreen from "./SearchScreen";
 import SeeAllScreen from "./SeeAllScreen";
 import Cart from "./Cart";
+import Popular from "./Popular";
+
 
 export {
     Create,
@@ -29,5 +31,6 @@ export {
     Detailbuku1,
     SearchScreen,
     SeeAllScreen,
-    Cart
+    Cart,
+    Popular,
 }
