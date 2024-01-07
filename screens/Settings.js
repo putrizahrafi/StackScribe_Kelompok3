@@ -168,7 +168,7 @@ const Settings = ({ navigation }) => {
 
         <Box mt={5}>
           <Heading size={"md"}>Support & About</Heading>
-          <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
+          <TouchableOpacity onPress={() => navigation.navigate('CobaCamera')}>
             <Box backgroundColor={"#F4F4F7"} p={2}>
               <HStack>
                 <Ionicons name="help-circle-outline" size={25} />

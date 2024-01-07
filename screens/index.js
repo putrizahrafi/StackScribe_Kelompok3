@@ -14,6 +14,7 @@ import SearchScreen from "./SearchScreen";
 import SeeAllScreen from "./SeeAllScreen";
 import Cart from "./Cart";
 import Popular from "./Popular";
+import CobaCamera from "./CobaCamera";
 
 
 export {
@@ -33,4 +34,5 @@ export {
     SeeAllScreen,
     Cart,
     Popular,
+    CobaCamera,
 }

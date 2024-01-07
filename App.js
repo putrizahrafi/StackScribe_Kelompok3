@@ -17,6 +17,7 @@ import {
   SeeAllScreen,
   Cart,
   Popular,
+  CobaCamera,
 } from "./screens";
 import BottomTabNav from "./navigations/BottomTabNav";
 import { NativeBaseProvider } from "native-base";
@@ -78,6 +79,8 @@ export default function App() {
           <Stack.Screen name="Cart" component={Cart} />
 
           <Stack.Screen name="Popular" component={Popular} />
+
+          <Stack.Screen name="CobaCamera" component={CobaCamera} />
 
 
         </Stack.Navigator>
