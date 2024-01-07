@@ -1,5 +1,5 @@
 import Create from "./Create";
-import Messages from "./Messages";
+import Category from "./Category";
 import Profile from "./Profile";
 import EditProfile from "./EditProfile";
 import Settings from "./Settings";
@@ -12,14 +12,20 @@ import Detailbuku1 from "./Detailbuku1";
 import Detailbuku2 from "./Detailbuku2";
 import Detailbuku3 from "./Detailbuku3";
 import Detailbuku4 from "./Detailbuku4";
+import Register from "./Register";
+import Login from "./Login";
+import Cart from "./Cart";
+import Payment from "./Payment";
 
 export {
     Create,
-    Messages,
+    Category,
     Profile,
     EditProfile,
     Settings,
     Home,
+    Register,
+    Login,
     ContactUs,
     Guide,
     Welcome,
@@ -27,5 +33,7 @@ export {
     Detailbuku1,
     Detailbuku2,
     Detailbuku3,
-    Detailbuku4
+    Detailbuku4,
+    Cart,
+    Payment,
 }

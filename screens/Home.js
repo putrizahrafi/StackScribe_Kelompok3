@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Banner, BookCard, Category, Gap, Header, Input, Section } from '../components';
-import { Box, HStack, Heading, Image, ScrollView, Text } from 'native-base';
+import { Box, HStack, Heading, Image, ScrollView, Text, Modal, showModal, Button } from 'native-base';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { TouchableOpacity } from 'react-native'
 
@@ -21,7 +21,7 @@ const Home = ({ navigation }) => {
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <HStack>
             <TouchableOpacity onPress={() => navigation.navigate('Detailbuku')}>
-              <Banner source={require('../assets/images/cover1.jpeg')} />
+            <Banner source={require('../assets/images/cover1.jpeg')} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Detailbuku')}>
               <Banner source={require('../assets/images/cover2.jpeg')} />
@@ -39,8 +39,8 @@ const Home = ({ navigation }) => {
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <HStack p={2}>
                 <Category
-                  source={'https://img.icons8.com/external-thin-kawalan-studio/96/external-telescope-education-thin-kawalan-studio-3.png'}
-                  name={"Sains"} />
+                  source={'assets/images/icons8-love-book-80.png'}
+                  name={"Romantic"} />
                 <Category
                   source={'https://img.icons8.com/ios/100/workstation.png'}
                   name={"Computer"} />

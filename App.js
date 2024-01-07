@@ -5,9 +5,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from 'react';
 import {
 Login,
-Signup,
+Register,
 Home,
-Messages,
+Category,
 Welcome,
 EditProfile,
 ContactUs,
@@ -16,7 +16,9 @@ Detailbuku,
 Detailbuku1,
 Detailbuku2,
 Detailbuku3,
-Detailbuku4 } from './screens';
+Detailbuku4,
+Cart,
+Payment } from './screens';
 import BottomTabNav from './navigations/BottomTabNav';
 import { NativeBaseProvider } from 'native-base';
 
@@ -50,6 +52,22 @@ export default function App() {
         <Stack.Screen
           name="Welcome"
           component={Welcome}
+          options={{
+            headerShown: false
+          }}
+        />
+
+        <Stack.Screen
+          name="Payment"
+          component={Payment}
+          options={{
+            headerShown: false
+          }}
+        />
+
+      <Stack.Screen
+          name="Cart"
+          component={Cart}
           options={{
             headerShown: false
           }}
@@ -103,12 +121,13 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="Messages"
-          component={Messages}
+          name="Category"
+          component={Category}
           options={{
             headerShown: false
           }}
-        />
+        /> 
+
         <Stack.Screen
           name="BottomTabNavigation"
           component={BottomTabNav}
@@ -130,6 +149,23 @@ export default function App() {
               headerShown: false
             }}
           />
+
+        <Stack.Screen
+            name="Register"
+            component={Register}
+            options={{
+              headerShown: false
+            }}
+          />
+
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              headerShown: false
+            }}
+          />
+
           <Stack.Screen
             name="Guide"
             component={Guide}

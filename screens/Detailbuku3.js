@@ -1,13 +1,16 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { Box, HStack, Heading, Text as NText, Stack, TextArea, Image, Center, VStack } from "native-base";
+import { Box, HStack, Heading, Text as NText, Stack, TextArea, Image, Center, VStack, Modal, Button, Radio } from "native-base";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
+import React, {useState} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, FONTS } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Banner, BookCard, Category, Gap, Header, Input, Section } from '../components';
 
 const Detailbuku3 = ({ navigation }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
     return (
         <SafeAreaView
             style={{
@@ -63,15 +66,6 @@ const Detailbuku3 = ({ navigation }) => {
                     Romance
                 </Text>
         </Box>
-        {/* <View
-        // justifyContent={'flex-start'}
-        // alignItems={'flex-start'}
-        // backgroundColor={'#E0F4FF'}
-        // marginHorizontal={12}
-        // borderRadius={20}
-        // marginBottom={10}
-        // padding={10}
-        > */}
         <Box>
       <Center mt="3" mb="4">
         <Heading fontSize="xl">Sinopsis</Heading>
@@ -99,6 +93,107 @@ const Detailbuku3 = ({ navigation }) => {
       </VStack>
         </Box>
         </ScrollView>
+        <Button marginHorizontal={70} marginTop={10} marginBottom={3} backgroundColor={'#9BB8CD'} onPress={() => navigation.navigate('Cart')}>Add To Cart</Button>
+      <Button marginHorizontal={70} marginBottom={10} backgroundColor={'#11235A'} onPress={() => setShowModal(true)}>Checkout</Button>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+        <Modal.Content maxWidth="350">
+          <Modal.CloseButton />
+          <Modal.Header>Order</Modal.Header>
+          <Modal.Body>
+            <VStack space={3}>
+              <HStack alignItems="center" justifyContent="space-between">
+                <Text fontWeight="medium">Sub Total</Text>
+                <Text color="blueGray.400">Rp 50.000</Text>
+              </HStack>
+              <HStack alignItems="center" justifyContent="space-between">
+                <Text fontWeight="medium">Tax</Text>
+                <Text color="blueGray.400">Rp 5.000</Text>
+              </HStack>
+              <HStack alignItems="center" justifyContent="space-between">
+                <Text fontWeight="medium">Total Amount</Text>
+                <Text color="green.500">Rp 55.000</Text>
+              </HStack>
+            </VStack>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button flex="1" backgroundColor={'#11235A'} onPress={() => {
+            setShowModal2(true);
+          }}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+
+      <Modal isOpen={showModal2} onClose={() => setShowModal2(false)} size="lg">
+        <Modal.Content maxWidth="350">
+          <Modal.CloseButton />
+          <Modal.Header>Select Address</Modal.Header>
+          <Modal.Body>
+            <Radio.Group defaultValue="address1" name="address" size="sm">
+              <VStack space={3}>
+                <Radio alignItems="flex-start" _text={{
+                mt: "-1",
+                ml: "2",
+                fontSize: "sm"
+              }} value="address1">
+                  Jl. Ketintang Barat No. 31, Surabaya
+                </Radio>
+                <Radio alignItems="flex-start" _text={{
+                mt: "-1",
+                ml: "2",
+                fontSize: "sm"
+              }} value="address2">
+                  Jl. Bibis Karah No. 19, Surabaya
+                </Radio>
+              </VStack>
+            </Radio.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button flex="1" backgroundColor={'#11235A'} onPress={() => {
+            setShowModal3(true);
+          }}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+
+      <Modal isOpen={showModal3} size="lg" onClose={() => setShowModal3(false)}>
+        <Modal.Content maxWidth="350">
+          <Modal.CloseButton />
+          <Modal.Header>Payment Options</Modal.Header>
+          <Modal.Body>
+            <Radio.Group name="payment" size="sm">
+              <VStack space={3}>
+                <Radio alignItems="flex-start" _text={{
+                mt: "-1",
+                ml: "2",
+                fontSize: "sm"
+              }} value="payment1">
+                  Cash on delivery
+                </Radio>
+                <Radio alignItems="flex-start" _text={{
+                mt: "-1",
+                ml: "2",
+                fontSize: "sm"
+              }} value="payment2">
+                  Credit/ Debit/ ATM Card
+                </Radio>
+              </VStack>
+            </Radio.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button flex="1" backgroundColor={'#11235A'} onPress={() => {
+            setShowModal(false);
+            setShowModal2(false);
+            setShowModal3(false);
+          }}>
+              Checkout
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
     </SafeAreaView>
     );
 };
