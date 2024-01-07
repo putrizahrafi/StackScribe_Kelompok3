@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import Button from "../components/Button";
 import { registerUser } from "../actions/action";
+import { ScrollView } from "native-base";
 
 const Register = ({ navigation }) => {
   const [nama, setNama] = useState("");
@@ -46,6 +47,7 @@ const Register = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <ScrollView>
       <View style={{ flex: 1, marginHorizontal: 22 }}>
         <View style={{ marginVertical: 22 }}>
           <Text
@@ -320,6 +322,7 @@ const Register = ({ navigation }) => {
           </Pressable>
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
