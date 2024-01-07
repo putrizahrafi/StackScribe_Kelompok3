@@ -183,3 +183,28 @@ export const getUserCart = async (userUid) => {
     throw error;
   }
 };
+
+export const fetchBooksByGenre = async (genre) => {
+  try {
+    const booksRef = collection(FIREBASE.firestore(), 'books');
+    const booksSnapshot = await getDocs(booksRef);
+
+    const filteredBooks = [];
+    booksSnapshot.forEach((doc) => {
+      const bookData = doc.data();
+      if (!genre || bookData.genre === genre) {
+        const bookWithImage = {
+          ...bookData,
+          id: doc.id,
+          imageUrl: bookData.imageUrl,
+        };
+        filteredBooks.push(bookWithImage);
+      }
+    });
+
+    return filteredBooks;
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    throw error;
+  }
+};

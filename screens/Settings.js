@@ -149,19 +149,22 @@ const Settings = ({ navigation }) => {
       </View>
 
       <ScrollView style={{ marginHorizontal: 12 }}>
-
-        {/* ACCOUNT */}
-        <Box mt={5}>
-          <Heading size={"md"}>Account</Heading>
-          <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-            <Box backgroundColor={"#F4F4F7"} p={2}>
-              <HStack>
-                <Ionicons name="person-circle-outline" size={25} />
-                <NText fontSize={16} fontWeight={"medium"} ml={8}>Edit Profile</NText>
-              </HStack>
-            </Box>
-          </TouchableOpacity>
-        </Box>
+        {/* Account Settings */}
+        <View style={{ marginBottom: 12 }}>
+          <Text style={{ ...FONTS.h4, marginVertical: 10 }}>Account</Text>
+          <View
+            style={{
+              borderRadius: 12,
+              backgrounColor: COLORS.gray,
+            }}
+          >
+            {accountItems.map((item, index) => (
+              <React.Fragment key={index}>
+                {renderSettingsItem(item)}
+              </React.Fragment>
+            ))}
+          </View>
+        </View>
 
         {/* Support and About settings */}
 
@@ -196,7 +199,7 @@ const Settings = ({ navigation }) => {
             <TouchableOpacity onPress={onSubmit}>
             <Box backgroundColor={"#F4F4F7"} p={2}>
               <HStack>
-                <Ionicons name="log-out-outline" size={25} />
+                <Ionicons name="call-outline" size={25} />
                 <NText fontSize={16} fontWeight={"medium"} ml={8}>Logout</NText>
               </HStack>
             </Box>
@@ -220,20 +223,6 @@ const Settings = ({ navigation }) => {
               <HStack>
                 <Ionicons name="book-outline" size={25} />
                 <NText fontSize={16} fontWeight={"medium"} ml={8}>Guide</NText>
-              </HStack>
-            </Box>
-          </TouchableOpacity>
-        </Box>
-
-        {/* ACTIONS */}
-
-        <Box mt={5}>
-          <Heading size={"md"}>Actions</Heading>
-          <TouchableOpacity onPress={() => console.log('log out')}>
-            <Box backgroundColor={"#F4F4F7"} p={2}>
-              <HStack>
-                <Ionicons name="log-out-outline" size={25} />
-                <NText fontSize={16} fontWeight={"medium"} ml={8}>Log Out</NText>
               </HStack>
             </Box>
           </TouchableOpacity>
