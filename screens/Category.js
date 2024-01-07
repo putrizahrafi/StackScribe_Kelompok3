@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import React, {useLayoutEffect} from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
@@ -14,7 +14,7 @@ useLayoutEffect(() => {
     fontSize: 40,
     fontWeight:"bold",
     color:"white",
-    marginHorizontal: 50
+    marginHorizontal: 10
   },
   headerStyle:{
     backgroundColor:"#003580",

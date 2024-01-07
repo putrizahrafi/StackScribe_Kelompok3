@@ -15,7 +15,8 @@ import {
   Detailbuku1,
   SearchScreen,
   SeeAllScreen,
-  Cart
+  Cart,
+  Popular,
 } from "./screens";
 import BottomTabNav from "./navigations/BottomTabNav";
 import { NativeBaseProvider } from "native-base";
@@ -75,6 +76,9 @@ export default function App() {
           <Stack.Screen name="SeeAll" component={SeeAllScreen} />
 
           <Stack.Screen name="Cart" component={Cart} />
+
+          <Stack.Screen name="Popular" component={Popular} />
+
 
         </Stack.Navigator>
       </NavigationContainer>

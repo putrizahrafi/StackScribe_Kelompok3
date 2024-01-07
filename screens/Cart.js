@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Button, Image, VStack, HStack, Heading, Box } from "native-base";
 import { COLORS, FONTS } from "../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { MaterialIcons } from "@expo/vector-icons";
 import { collection, doc, getDocs, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import FIREBASE from "../config/FIREBASE";
 import { Ionicons } from "@expo/vector-icons";
+import {Gap} from '../components';
 import { getUserDetails, getBookDetails } from "../actions/action";
 
 
@@ -101,14 +104,49 @@ const Cart = ({ navigation }) => {
   };
 
   return (
-    <View
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.white,
+      }}
+    >
+      {/* button biru settings */}
+      <View
+        style={{
+          marginHorizontal: 12,
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: 20,
+          backgroundColor: COLORS.blue,
+          padding: 20,
+          borderRadius: 20,
+        }}
+      >
+        {/* tombol untuk kembali */}
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            position: "absolute",
+            left: 0,
+            padding: 20
+          }}
+        >
+          <MaterialIcons
+            name="keyboard-arrow-left"
+            size={24}
+            color={COLORS.black}
+          />
+        </TouchableOpacity>
+
+        <Text style={{ ...FONTS.h3 }}>Cart</Text>
+      </View>
+      <View
       style={{
         flex: 1,
         backgroundColor: COLORS.white,
         padding: 20,
       }}
     >
-      <Heading style={{ ...FONTS.h3, marginBottom: 20 }}>Cart</Heading>
 
       {cartItems.length > 0 ? (
         <ScrollView>
@@ -157,6 +195,7 @@ const Cart = ({ navigation }) => {
         Proceed to Checkout
       </Button>
     </View>
+    </SafeAreaView>
   );
 };
 

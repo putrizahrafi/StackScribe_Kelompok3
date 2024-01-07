@@ -53,7 +53,7 @@ const BottomTabNav = () => {
           tabBarIcon: ({ focused }) => {
             return (
               <AntDesign
-                name="menuunfold"
+                name="switcher"
                 size={24}
                 color={focused ? COLORS.primary : COLORS.black}
               />
