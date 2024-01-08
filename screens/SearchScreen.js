@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, Box, Text, Input, VStack, Button } from 'native-base';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useNavigation } from "@react-navigation/native";
 import { COLORS, FONTS } from '../constants';
 
 const SearchScreen = () => {
+  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = () => {
-    // Implement your search functionality here
     console.log('Searching for:', searchQuery);
   };
 

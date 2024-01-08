@@ -8,7 +8,6 @@ const Header = () => {
   const navigation = useNavigation();
 
   const handleCartPress = () => {
-    // Navigate to the Cart screen
     navigation.navigate('Cart');
   };
 

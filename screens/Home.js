@@ -51,7 +51,7 @@ const Home = ({ navigation }) => {
         <Box p={3}>
           <Header />
           <Gap height={16} />
-          <Input /> 
+          <Input navigation={navigation} /> 
           <Gap height={16} />
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <HStack>
@@ -83,7 +83,7 @@ const Home = ({ navigation }) => {
             >
               <HStack p={2}>
                 <Category
-                  source={"assets/images/icons8-love-book-80.png"}
+                  source={"https://img.icons8.com/ios/100/novel--v1.png"}
                   name={"Romantic"}
                 />
                 <Category

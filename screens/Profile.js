@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 const Profile = ({ navigation }) => {
   const [profile, setProfile] = useState(null);
+  const [profilePictureUrl, setProfilePictureUrl] = useState(null);
 
   const getUserData = () => {
     getData("user").then((res) => {
@@ -18,39 +19,41 @@ const Profile = ({ navigation }) => {
       if (data) {
         console.log("isi data", data);
         setProfile(data);
+
+        // Retrieve profile picture URL from the user data
+        const profilePictureUrl = data.profilepicture;
+        console.log("Profile Picture URL:", profilePictureUrl);
+        setProfilePictureUrl(profilePictureUrl);
       }
     });
   };
 
   useEffect(() => {
-  const unsubscribe = navigation.addListener("focus", () => {
-    getUserData();
-  });
+    const unsubscribe = navigation.addListener("focus", () => {
+      getUserData();
+    });
 
-  return () => {
-    unsubscribe();
-  };
-}, [navigation]);
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation, profilePictureUrl]);
 
   const onSubmit = (profile) => {
     if (profile) {
       FIREBASE.auth()
         .signOut()
         .then(() => {
-          // Sign-out successful.
+ 
           clearStorage();
-          navigation.goBack(); // Go back to the previous screen (Settings)
+          navigation.goBack(); 
         })
         .catch((error) => {
-          // An error happened.
           alert(error);
         });
     } else {
-      navigation.goBack(); // Go back to the previous screen (Settings)
+      navigation.goBack(); 
     }
   };
-  
-  
 
   return (
     <NativeBaseProvider>
@@ -73,10 +76,10 @@ const Profile = ({ navigation }) => {
             }}
           />
         </View>
-        
+
         <View style={{ flex: 1, alignItems: "center" }}>
           <Image
-            source={{uri: "https://firebasestorage.googleapis.com/v0/b/stackedscribe.appspot.com/o/user%2Fphotos%2Fbababoey.jpg?alt=media&token=60010b5c-5622-41c7-93ba-9ef7e23428c1"}}
+            source={{ uri: profilePictureUrl }}
             resizeMode="contain"
             style={{
               height: 155,
@@ -86,6 +89,7 @@ const Profile = ({ navigation }) => {
               borderWidth: 2,
               marginTop: -90,
             }}
+            onError={(error) => console.error("Image Error:", error)}
           />
 
           <Heading size="lg" marginTop="4" fontSize={30} bold>
@@ -127,7 +131,6 @@ const Profile = ({ navigation }) => {
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-                
               }}
             >
               <Icon name="github" size={25} color="#bdbdbd" />
@@ -167,4 +170,3 @@ const Profile = ({ navigation }) => {
 };
 
 export default Profile;
-// export default profile

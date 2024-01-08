@@ -1,5 +1,10 @@
-import { useState, useLayoutEffect, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList,TouchableOpacity } from "react-native";
+import React, { useState, useLayoutEffect, useEffect } from "react";
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Box, ScrollView, HStack, Button } from "native-base";
 import { fetchBooksByGenre } from "../actions/action";
@@ -9,28 +14,31 @@ const Category = () => {
   const navigation = useNavigation();
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchBooks = async (genre) => {
     try {
       const fetchedBooks = await fetchBooksByGenre(genre);
       setBooks(fetchedBooks);
     } catch (error) {
-      console.error('Error loading books:', error);
+      console.error("Error loading books:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      title: 'Category',
+      title: "Category",
       headerTitleStyle: {
         fontSize: 40,
-        fontWeight: 'bold',
-        color: 'white',
+        fontWeight: "bold",
+        color: "white",
         marginHorizontal: 50,
       },
       headerStyle: {
-        backgroundColor: '#003580',
+        backgroundColor: "#003580",
         height: 110,
       },
     });
@@ -41,55 +49,79 @@ const Category = () => {
 
   useEffect(() => {
     // Load books based on the selected genre
+    setLoading(true);
     fetchBooks(selectedGenre);
   }, [selectedGenre]);
 
   const navigateToDetailbuku = (bookId) => {
     // Implement your navigation logic here
-    console.log(`Navigate to book with ID: ${bookId}`);
+    navigation.navigate("Detailbuku1", { bookId });
   };
 
-  const renderBookItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigateToDetailbuku(item.id)}>
-      <BookCard source={{ uri: item.cover }} title={item.title} author={item.author} />
-    </TouchableOpacity>
+  const renderCategoryButton = (genre) => (
+    <Button
+      key={genre}
+      borderRadius={20}
+      backgroundColor={selectedGenre === genre ? "#003580" : "#FFFFFF"}
+      variant={"outline"}
+      marginX={2}
+      color={selectedGenre === genre ? "#FFFFFF" : "#003580"}
+      onPress={() => {
+        setSelectedGenre(selectedGenre === genre ? null : genre);
+      }}
+      style={{ margin: 5 }}
+    >
+      {genre}
+    </Button>
   );
 
   return (
-    <View>
-      <Box bgColor={'#003580'} p={2}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+    <View style={{ flex: 1 }}>
+      <Box
+        bgColor={"#003580"}
+        p={2}
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <HStack>
-            {['Romance', 'Fiction', 'Fantasy', 'Horror', 'Mystery'].map(
-              (genre, index) => (
-                <Button
-                  key={index}
-                  borderRadius={20}
-                  backgroundColor={
-                    selectedGenre === genre ? '#003580' : '#FFFFFF'
-                  }
-                  variant={'outline'}
-                  marginX={2}
-                  color={selectedGenre === genre ? '#FFFFFF' : '#003580'}
-                  onPress={() => {
-                    setSelectedGenre(selectedGenre === genre ? null : genre);
-                  }}
-                >
-                  {genre}
-                </Button>
-              )
+            {["Romance", "Fiction", "Fantasy", "Horror", "Mystery"].map(
+              renderCategoryButton
             )}
           </HStack>
         </ScrollView>
       </Box>
 
-      <FlatList
-        data={books}
-        keyExtractor={(item) => item.id}
-        renderItem={renderBookItem}
-        numColumns={2} // Set this to the number of columns you want
-        contentContainerStyle={{ justifyContent: 'space-around', paddingBottom: 20 }}
-      />
+      {loading ? (
+        <View
+          style={{ flex: 2, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" color="#003580" />
+        </View>
+      ) : (
+        <FlatList
+          data={books}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => navigateToDetailbuku(item.id)}>
+              <BookCard
+                source={{ uri: item.cover }}
+                title={item.title}
+                author={item.author}
+              />
+            </TouchableOpacity>
+          )}
+          numColumns={2} // Set this to the number of columns you want
+          contentContainerStyle={{
+            alignItems: "center",
+            paddingLeft: 45,
+            paddingRight: 10,
+            paddingTop: 20,
+          }}
+        />
+      )}
     </View>
   );
 };
