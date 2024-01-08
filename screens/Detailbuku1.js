@@ -25,7 +25,7 @@ import { getBookDetails, addToCart, getUserDetails } from "../actions/action";
 
 const Detailbuku1 = ({ route, navigation }) => {
   const { bookId } = route?.params || {};
-  const [bookDetails, setBookDetails] = useState(null);
+  const { bookDetails } = route.params || {};
   const [userUid, setUserUid] = useState(null);
 
   useEffect(() => {

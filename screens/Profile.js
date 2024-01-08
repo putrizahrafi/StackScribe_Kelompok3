@@ -4,7 +4,7 @@ import { clearStorage, getData } from "../utils";
 import FIREBASE from "../config/FIREBASE";
 
 const Profile = ({ navigation }) => {
-    const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(null);
 
   const getUserData = () => {
     getData("user").then((res) => {
@@ -45,14 +45,20 @@ const Profile = ({ navigation }) => {
       navigation.replace("Login");
     }
   };
-  return (
 
+  return (
     <Box mt={5} mx={5} backgroundColor="blueGray.100" flex={1} marginTop={20} flexDirection="column">
       <ScrollView>
         <VStack backgroundColor="blueGray.100" width="full" mb={10}>
-          <Image source={require("../assets/images/hero1.jpg")} size="2xl" borderRadius="full" alignSelf="center" alt="Foto Profil" />
+          <Image
+            source={{ uri: profile?.profilepicture }}
+            size="2xl"
+            borderRadius="full"
+            alignSelf="center"
+            alt="Foto Profil"
+          />
           <Text fontSize="3xl" alignSelf="center" marginTop={5} fontWeight="bold">
-          {profile?.nama}
+            {profile?.nama}
           </Text>
         </VStack>
         <Box flexDirection="column" bgColor="white" shadowColor="black" shadowOffset={{ width: 0, height: 2 }} shadowOpacity={0.25} shadowRadius={3.5} justifyContent="space-evenly" p={5} borderRadius="xl">

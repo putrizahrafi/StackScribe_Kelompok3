@@ -24,6 +24,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { fetchPopularBooks } from "../actions/action";
 import { TouchableOpacity } from "react-native";
+import { getBookDetails } from "../actions/action";
 
 const Home = ({ navigation }) => {
   const [popularBooks, setPopularBooks] = useState([]);
@@ -41,8 +42,15 @@ const Home = ({ navigation }) => {
     fetchData();
   }, []);
 
-  const navigateToDetailbuku = (bookId) => {
-    navigation.navigate("Detailbuku1", { bookId });
+  const navigateToDetailbuku = async (bookId, bookDetails) => {
+    try {
+      if (!bookDetails) {
+        bookDetails = await getBookDetails(bookId);
+      }
+      navigation.navigate("Detailbuku1", { bookDetails });
+    } catch (error) {
+      console.error("Error navigating to Detailbuku1:", error);
+    }
   };
 
   return (
@@ -51,23 +59,35 @@ const Home = ({ navigation }) => {
         <Box p={3}>
           <Header />
           <Gap height={16} />
-          <Input /> 
+          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
+            <Box backgroundColor="#001B79" borderRadius={20}>
+              <HStack
+                alignItems="center"
+                p={3}
+                space={2}
+                justifyContent="space-between"
+              >
+                <Text fontSize={16} color="white" bold>
+                  Search for books
+                </Text>
+                <Ionicons name="search-outline" size={20} color="white" />
+              </HStack>
+            </Box>
+          </TouchableOpacity>
           <Gap height={16} />
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <HStack>
               <TouchableOpacity
-                onPress={() => navigation.navigate("Detailbuku")}
+                onPress={() => navigateToDetailbuku("the_storm")}
               >
                 <Banner source={require("../assets/images/cover1.jpeg")} />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("Detailbuku")}
+                onPress={() => navigateToDetailbuku("wizard_of_oz")}
               >
                 <Banner source={require("../assets/images/cover2.jpeg")} />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Detailbuku")}
-              >
+              <TouchableOpacity onPress={() => navigateToDetailbuku("wonder")}>
                 <Banner source={require("../assets/images/cover3.jpeg")} />
               </TouchableOpacity>
             </HStack>
@@ -82,34 +102,58 @@ const Home = ({ navigation }) => {
               showsHorizontalScrollIndicator={false}
             >
               <HStack p={2}>
-                <Category
-                  source={"assets/images/icons8-love-book-80.png"}
-                  name={"Romantic"}
-                />
-                <Category
-                  source={"https://img.icons8.com/ios/100/workstation.png"}
-                  name={"Computer"}
-                />
-                <Category
-                  source={"https://img.icons8.com/badges/96/user.png"}
-                  name={"Biography"}
-                />
-                <Category
-                  source={
-                    "https://img.icons8.com/material-outlined/96/code.png"
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Category", { genre: "Romance" })
                   }
-                  name={"Coding"}
-                />
-                <Category
-                  source={"https://img.icons8.com/isometric-line/100/book.png"}
-                  name={"Novel"}
-                />
-                <Category
-                  source={
-                    "https://img.icons8.com/fluency-systems-regular/48/mosque.png"
+                >
+                  <Category
+                    source={"https://img.icons8.com/ios/100/novel.png"}
+                    name={"Romance"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Category", { genre: "Fiction" })
                   }
-                  name={"Religion"}
-                />
+                >
+                  <Category
+                    source={
+                      "https://img.icons8.com/fluency-systems-regular/96/enterprise-ncc-1701.png"
+                    }
+                    name={"Fiction"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Category", { genre: "Fantasy" })
+                  }
+                >
+                  <Category
+                    source={"https://img.icons8.com/ios/100/castle.png"}
+                    name={"Fantasy"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Category", { genre: "Horror" })
+                  }
+                >
+                  <Category
+                    source={"https://img.icons8.com/ios/100/ghost--v1.png"}
+                    name={"Horror"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Category", { genre: "Mystery" })
+                  }
+                >
+                  <Category
+                    source={"https://img.icons8.com/ios/100/cat-eyes.png"}
+                    name={"Mystery"}
+                  />
+                </TouchableOpacity>
               </HStack>
             </ScrollView>
             <Gap height={12} />
@@ -124,15 +168,15 @@ const Home = ({ navigation }) => {
               <HStack>
                 {popularBooks.map((book, index) => (
                   <TouchableOpacity
-                  key={index}
-                  onPress={() => navigateToDetailbuku(book.id)}
-                >
-                  <BookCard
-                    source={{ uri: book.cover }}
-                    title={book.title}
-                    author={book.author}
-                  />
-                </TouchableOpacity>
+                    key={index}
+                    onPress={() => navigateToDetailbuku(book.id)}
+                  >
+                    <BookCard
+                      source={{ uri: book.cover }}
+                      title={book.title}
+                      author={book.author}
+                    />
+                  </TouchableOpacity>
                 ))}
               </HStack>
             </ScrollView>

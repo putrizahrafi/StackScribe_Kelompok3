@@ -13,7 +13,7 @@ import {
   ContactUs,
   Guide,
   Detailbuku1,
-  SearchScreen,
+  Search,
   SeeAllScreen,
   Cart,
   Popular,
@@ -56,6 +56,8 @@ export default function App() {
 
           <Stack.Screen name="Detailbuku1" component={Detailbuku1} />
 
+          <Stack.Screen name="Search" component={Search} />
+
           <Stack.Screen name="Home" component={Home} />
 
           <Stack.Screen name="Category" component={Category} />
@@ -71,8 +73,6 @@ export default function App() {
           <Stack.Screen name="Login" component={Login} />
 
           <Stack.Screen name="Guide" component={Guide} />
-
-          <Stack.Screen name="Search" component={SearchScreen} />
 
           <Stack.Screen name="SeeAll" component={SeeAllScreen} />
 

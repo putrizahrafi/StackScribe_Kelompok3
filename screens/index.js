@@ -8,9 +8,9 @@ import ContactUs from "./ContactUs";
 import Guide from "./Guide";
 import Welcome from "./Welcome";
 import Detailbuku1 from "./Detailbuku1";
+import Search from "./Search";
 import Register from "./Register";
 import Login from "./Login";
-import SearchScreen from "./SearchScreen";
 import SeeAllScreen from "./SeeAllScreen";
 import Cart from "./Cart";
 import Popular from "./Popular";
@@ -30,7 +30,7 @@ export {
     Guide,
     Welcome,
     Detailbuku1,
-    SearchScreen,
+    Search,
     SeeAllScreen,
     Cart,
     Popular,
